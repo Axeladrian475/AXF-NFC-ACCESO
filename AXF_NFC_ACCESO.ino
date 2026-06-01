@@ -27,10 +27,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIGURACIÓN — edita solo esta sección antes de flashear
 // ─────────────────────────────────────────────────────────────────────────────
-
 const char* WIFI_SSID     = "Mega_2.4G_6F7B";
 const char* WIFI_PASSWORD = "7Qk93cRx";
-const char* SERVER_URL    = "http://192.168.1.59:3001";
+const char* SERVER_URL    = "http://192.168.1.16:3001";
 const char* API_KEY       = "axf_esp32_2025";
 
 // ID de la sucursal donde está instalado este dispositivo.
