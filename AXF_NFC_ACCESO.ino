@@ -22,6 +22,7 @@
 #include <Adafruit_PN532.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <WiFiClientSecure.h>
 #include <ArduinoJson.h>
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -29,7 +30,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 const char* WIFI_SSID     = "Mega_2.4G_6F7B";
 const char* WIFI_PASSWORD = "7Qk93cRx";
-const char* SERVER_URL    = "http://192.168.1.16:3001";
+const char* SERVER_URL    = "https://axfgymnet.com";
 const char* API_KEY       = "axf_esp32_2025";
 
 // ID de la sucursal donde está instalado este dispositivo.
@@ -59,6 +60,7 @@ const unsigned long DEBOUNCE_MS = 2500;
 // OBJETO NFC
 // ─────────────────────────────────────────────────────────────────────────────
 Adafruit_PN532 nfc(PN532_SS);
+WiFiClientSecure secureClient;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ESTADO GLOBAL
@@ -147,7 +149,7 @@ void procesarAccesoSucursal(const String& uidStr) {
   Serial.println("[HTTP] Consultando backend...");
 
   HTTPClient http;
-  http.begin(String(SERVER_URL) + "/api/hardware/acceso/sucursal");
+  http.begin(secureClient, String(SERVER_URL) + "/api/hardware/acceso/sucursal");
   http.addHeader("Content-Type", "application/json");
   http.setTimeout(6000);
 
@@ -262,6 +264,9 @@ void setup() {
   } else {
     Serial.println("\n[WIFI] No conectado — reintentando en loop");
   }
+
+  // Configurar cliente HTTPS (sin verificación de certificado)
+  secureClient.setInsecure();
 
   // NFC
   SPI.begin(PN532_SCK, PN532_MISO, PN532_MOSI, PN532_SS);
